@@ -1,0 +1,7 @@
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Editor configs
+.vscode/
+.idea/
