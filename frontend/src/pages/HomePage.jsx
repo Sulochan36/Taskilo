@@ -6,6 +6,7 @@ import HowItWorks from '../sections/HowItWorks'
 import { useLocation } from 'react-router'
 import Cta from '../components/cta'
 import Footer from '../components/Footer'
+import TestDropdown from '../components/TestDropdown'
 
 
 const HomePage = () => {
@@ -25,6 +26,7 @@ const HomePage = () => {
     return (
         <div className='flex flex-wrap flex-col justify-center items-center'>
             <section className=' flex flex-wrap flex-col justify-center items-center gap-y-3.5 w-full '>
+                <TestDropdown />
                 <Hero />
                 <Features />
                 <ProblemSolution />

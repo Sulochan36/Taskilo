@@ -2,196 +2,211 @@ import React, { useState, useRef } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFieldArray } from 'react-hook-form';
+
 import {
     Dialog,
     DialogContent,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { axiosInstance } from '../lib/axios';
-import toast from 'react-hot-toast';
 
-// Define the form schema with todolist as an array of objects containing text and done state
+import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
+import { axiosInstance } from '../lib/axios';
+
 const formSchema = z.object({
-    title: z.string().min(1, 'Title is required').max(100),
-    startDate: z.string().refine(date => !isNaN(Date.parse(date)), {
-        message: 'Invalid date format',
-    }),
-    targetDate: z.string().refine(date => !isNaN(Date.parse(date)), {
-        message: 'Invalid date format',
-    }),
-    description: z.string().min(1, 'Description is required'),
-    purpose: z.string().min(1, 'Purpose is required'),
-    todolist: z.array(z.object({
-        taskId:z.string(),
-        text: z.string().min(1, 'Activity text is required'),
-        done: z.boolean(),
-    })).min(1, 'At least one activity is required'), // Activities validation
+    title: z.string().min(1),
+    startDate: z.string(),
+    targetDate: z.string(),
+    description: z.string().min(1),
+    purpose: z.string().min(1),
+    todolist: z.array(
+        z.object({
+            taskId: z.string(),
+            text: z.string(),
+            done: z.boolean(),
+        })
+    ).min(1)
 });
 
 const AddGoalForm = ({ goal, onGoalUpdate }) => {
-    const [activityText, setActivityText] = useState('');
-    const activityInputRef = useRef(null); // Create a reference for the activity input
 
-    // Use react-hook-form for form handling
+    const [open, setOpen] = useState(false);
+    const [activityText, setActivityText] = useState("");
+    const activityInputRef = useRef(null);
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: goal || {
-            title: '',
-            startDate: '',
-            targetDate: '',
-            description: '',
-            purpose: '',
-            todolist: [], // Initialize todolist as an empty array
-        },
+            title: "",
+            startDate: "",
+            targetDate: "",
+            description: "",
+            purpose: "",
+            todolist: []
+        }
     });
 
-    const { fields, append, remove, update } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: 'todolist', // Todolist field name in form
+        name: "todolist"
     });
-
-    const handleCheckboxChange = (index) => {
-        const updatedTodolist = [...form.getValues('todolist')];
-        updatedTodolist[index].done = !updatedTodolist[index].done;
-        form.setValue('todolist', updatedTodolist);
-    };
-
-    const handleActivityChange = (e, index) => {
-        const updatedTodolist = [...form.getValues('todolist')];
-        updatedTodolist[index].text = e.target.value;
-        form.setValue('todolist', updatedTodolist);
-    };
 
     const handleActivitySubmit = () => {
-        const newTask = {
-            taskId: `task-${Date.now()}-${Math.floor(Math.random() * 1000)}`,  // Generate a unique taskId
+        if (!activityText.trim()) return;
+
+        append({
+            taskId: `task-${Date.now()}-${Math.random()}`,
             text: activityText,
             done: false,
-        };
-        append(newTask);
-        setActivityText('');
-        activityInputRef.current.focus(); // Retain focus on the input after adding the activity
+        });
+
+        setActivityText("");
+        activityInputRef.current?.focus();
     };
 
     const onSubmit = async (values) => {
-        if (goal) {
-            // Update the goal in the database
-            try {
-                const res = await axiosInstance.put(`/goals/${goal._id}`, {
+        try {
+            if (goal) {
+                await axiosInstance.put(`/goals/${goal._id}`, {
                     ...values,
-                    status: goal.status, // preserve status
+                    status: goal.status
                 });
-        
-                toast.success("Goal updated successfully!");
-                onGoalUpdate(res.data); // Update local state with updated goal
-            } catch (error) {
-                console.error("Error updating goal:", error);
-                toast.error(error.response?.data?.message || "Failed to update goal");
+                toast.success("Goal updated!");
+            } else {
+                await axiosInstance.post('/goals', values);
+                toast.success("Goal added!");
+                form.reset();
             }
-        } else {
-            // Create a new goal
-            try {
-                const res = await axiosInstance.post('/goals', {
-                    ...values,
-                });
-        
-                toast.success("Goal added successfully!");
-                form.reset(); // Clear the form
-            } catch (error) {
-                console.error("Error adding goal:", error);
-                toast.error(error.response?.data?.message || "Failed to add goal");
-            }
+
+            setOpen(false);
+            onGoalUpdate();    // Refresh parent
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to save goal");
         }
-        
     };
 
     return (
-        <Dialog className='max-h-[560px] overflow-y-scroll'>
-            
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline">
-                    {goal ? 'Edit Goal' :'Add Goal'}
-                    
+                    {goal ? "Edit Goal" : "Add Goal"}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] lg:min-w-4xl my-4 max-h-[90vh] overflow-y-auto border-4 flex flex-col gap-4 p-6">
 
-                
-                    <h2 className='text-3xl font-bold'>Add Goal</h2>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full flex flex-col flex-wrap justify-center">
-                    {/* Goal Title */}
-                    <div className='flex items-center gap-x-8 '>
-                        <label htmlFor="title">Goal Title</label>
-                        <input className='border-2 p-2 rounded-2xl w-xl' type="text" id="title" {...form.register('title')} />
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
+
+                <h2 className="text-3xl font-bold mb-4">
+                    {goal ? "Edit Goal" : "Add New Goal"}
+                </h2>
+
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6"
+                >
+
+                    {/* Title */}
+                    <input
+                        className="border p-2 rounded w-full"
+                        placeholder="Goal Title"
+                        {...form.register("title")}
+                    />
+
+                    {/* Dates */}
+                    <div className="flex gap-4">
+                        <input
+                            className="border p-2 rounded"
+                            type="date"
+                            {...form.register("startDate")}
+                        />
+                        <input
+                            className="border p-2 rounded"
+                            type="date"
+                            {...form.register("targetDate")}
+                        />
                     </div>
 
-
-                    <div className='flex flex-col md:flex-row flex-wrap gap-10 justify-between items-center '>
-                        {/* Start Date */}
-                        <div className='flex items-center gap-x-8'>
-                            <label htmlFor="startDate">Start Date</label>
-                            <input className='border-2 p-2 rounded-2xl text-primary' type="date" id="startDate" {...form.register('startDate')} />
-                        </div>
-                        {/* Target Date */}
-                        <div className='flex items-center gap-x-8'>
-                            <label htmlFor="targetDate">Target Date</label>
-                            <input className='border-2 p-2 rounded-2xl text-primary' type="date" id="targetDate" {...form.register('targetDate')} />
-                        </div>
-                    </div>
-                    
                     {/* Description */}
-                    <div className='flex items-center gap-x-8'>
-                        <label htmlFor="description">Description</label>
-                        <textarea cols={80} rows={7} className='border-2' id="description" {...form.register('description')} />
-                    </div>
+                    <textarea
+                        className="border p-2 rounded w-full"
+                        rows="4"
+                        placeholder="Description"
+                        {...form.register("description")}
+                    />
+
                     {/* Purpose */}
-                    <div className='flex items-center gap-x-8'>
-                        <label htmlFor="purpose">Purpose</label>
-                        <textarea cols={80} rows={4} className='border-2' id="purpose" {...form.register('purpose')} />
-                    </div>
-                    {/* Todolist (Activities) */}
-                    <div className='flex flex-col gap-4'>
-                        <label htmlFor="todolist">Todolist</label>
+                    <textarea
+                        className="border p-2 rounded w-full"
+                        rows="3"
+                        placeholder="Purpose"
+                        {...form.register("purpose")}
+                    />
+
+                    {/* Todolist */}
+                    <div className="space-y-3">
+                        <label>Todolist</label>
                         {fields.map((item, index) => (
-                            <div key={item.id} className="flex items-center gap-2">
+                            <div key={item.id} className="flex gap-2">
                                 <input
-                                    className='border-2'
                                     type="checkbox"
                                     checked={item.done}
-                                    onChange={() => handleCheckboxChange(index)}
+                                    onChange={() => {
+                                        form.setValue(
+                                            `todolist.${index}.done`,
+                                            !item.done
+                                        );
+                                    }}
                                 />
                                 <input
-                                    className='border-2 p-2 rounded-2xl'
-                                    type="text"
-                                    placeholder="Add activity"
+                                    className="border p-2 rounded flex-grow"
                                     value={item.text}
-                                    onChange={(e) => handleActivityChange(e, index)}
+                                    onChange={(e) =>
+                                        form.setValue(
+                                            `todolist.${index}.text`,
+                                            e.target.value
+                                        )
+                                    }
                                 />
-                                <Button type="button" onClick={() => remove(index)} className='bg-red-600 text-white cursor-pointer'>
+                                <Button
+                                    type="button"
+                                    className="bg-red-600 text-white"
+                                    onClick={() => remove(index)}
+                                >
                                     X
                                 </Button>
                             </div>
                         ))}
-                        <div className="flex items-center space-x-2">
+
+                        {/* Add new activity */}
+                        <div className="flex gap-2">
                             <input
-                                className='border-2 p-2 rounded-2xl text-primary'
                                 ref={activityInputRef}
-                                type="text"
-                                placeholder="Add new activity"
+                                className="border p-2 rounded flex-grow"
+                                placeholder="New activity"
                                 value={activityText}
                                 onChange={(e) => setActivityText(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleActivitySubmit();
+                                    }
+                                }}
                             />
-                            <Button className='bg-green-700 text-black cursor-pointer' type="button" onClick={handleActivitySubmit}>
-                                Add Activity
+                            <Button
+                                type="button"
+                                onClick={handleActivitySubmit}
+                                className="bg-green-700"
+                            >
+                                Add
                             </Button>
                         </div>
                     </div>
-                    {/* Submit Button */}
-                    <Button className='bg-green-500 text-black font-bold cursor-pointer ' type="submit">{goal ? 'Update Goal' : 'Add Goal'}</Button>
+
+                    <Button className="bg-green-500 font-bold" type="submit">
+                        {goal ? "Update Goal" : "Add Goal"}
+                    </Button>
                 </form>
-                
+
             </DialogContent>
         </Dialog>
     );
