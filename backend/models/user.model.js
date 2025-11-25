@@ -16,12 +16,20 @@ const userSchema = new mongoose.Schema(
             required: true,
             minlength: 6,
         },
-        confirmPassword:{
-            type: String,
-        },
+
         profilePic: {
             type: String,
             default: "",
+        },
+
+        todayList: {
+            type: [
+                {
+                    goalId: { type: String, required: true },
+                    taskId: { type: String, required: true }
+                }
+            ],
+            default: [],
         },
     },
     { timestamps: true }

@@ -6,6 +6,7 @@ import { connectDB } from './db/connectDB.js';
 
 import authRoutes from "./routes/auth.route.js";
 import goalRoutes from './routes/goal.routes.js';
+import todayRoutes from "./routes/today.routes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api/goals", goalRoutes);
+app.use("/api/today", todayRoutes);
 
 app.listen(PORT, () => {
     connectDB();

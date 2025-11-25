@@ -89,3 +89,26 @@ export const updateGoal = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+export const updateTaskDone = async (req, res) => {
+    try {
+        const { goalId, taskId } = req.params;
+        const { done } = req.body;
+
+        const goal = await Goal.findOne({ _id: goalId, user: req.user._id });
+        if (!goal) return res.status(404).json({ message: "Goal not found" });
+
+        const task = goal.todolist.find(t => t.taskId === taskId);
+        if (!task) return res.status(404).json({ message: "Task not found" });
+
+        task.done = done;
+
+        await goal.save();
+        res.status(200).json(goal);
+
+    } catch (err) {
+        console.error("Error updating task done:", err);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+

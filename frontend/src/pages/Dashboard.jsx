@@ -12,16 +12,16 @@ import {
     CategoryScale
 } from 'chart.js';
 import PieChart from '../components/PieChart.jsx';
-import { useGoals } from '../GoalsContext.jsx';
 import Quote from '../components/Quote.jsx';
 import { useNavigate } from 'react-router';
 import { useAuthStore } from '../store/useAuthStore.js';
-// import AppCalendar from '../components/AppCalendar.jsx';
+import { useGoalsQuery } from '../lib/queries/goals.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title, CategoryScale);
 
 const Dashboard = () => {
-    const { goals } = useGoals();
+    const { data: goals = [] } = useGoalsQuery();
+
     const [chartData, setChartData] = useState(null);
 
     const totalGoals = goals.length;

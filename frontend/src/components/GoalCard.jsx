@@ -10,16 +10,14 @@ import { Star } from 'lucide-react';
 import AddGoalForm from './AddGoalForm';
 import { statusGoals } from '../lib/utils';
 import { axiosInstance } from '../lib/axios';
+import { useDeleteGoal } from '../lib/queries/goals';
 
 const GoalCard = ({ goals, onGoalUpdate }) => {
 
-    const deleteGoal = async (goalId) => {
-        try {
-            await axiosInstance.delete(`/goals/${goalId}`);
-            onGoalUpdate(); // Refresh goals list
-        } catch (error) {
-            console.error("Error deleting goal:", error);
-        }
+    const deleteGoalMutation = useDeleteGoal();
+
+    const handleDelete = (id) => {
+        deleteGoalMutation.mutate(id);
     };
 
     const calculateProgress = (todolist) => {
@@ -77,7 +75,7 @@ const GoalCard = ({ goals, onGoalUpdate }) => {
 
                             <Button
                                 className='bg-red-500'
-                                onClick={() => deleteGoal(goal._id)}
+                                onClick={() => handleDelete(goal._id)}
                             >
                                 Delete Goal
                             </Button>

@@ -2,15 +2,23 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { BrowserRouter } from 'react-router'
 import { ThemeProvider } from './components/provider/ThemeProvider.jsx'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
 
-  <ThemeProvider defaultTheme='dark' storageKey="vite-ui-theme">
-    <StrictMode>
-      <App />
-    </StrictMode>
-  </ThemeProvider>
-
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme='dark' storageKey="vite-ui-theme">
+        <App />
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider >
+  </StrictMode>
 )

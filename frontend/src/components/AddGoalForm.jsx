@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 import { axiosInstance } from '../lib/axios';
+import { useCreateGoal, useUpdateGoal } from '../lib/queries/goals';
 
 const formSchema = z.object({
     title: z.string().min(1),
@@ -33,6 +34,9 @@ const AddGoalForm = ({ goal, onGoalUpdate }) => {
     const [open, setOpen] = useState(false);
     const [activityText, setActivityText] = useState("");
     const activityInputRef = useRef(null);
+
+    const createGoalMutation = useCreateGoal();
+    const updateGoalMutation = useUpdateGoal();
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -64,25 +68,29 @@ const AddGoalForm = ({ goal, onGoalUpdate }) => {
         activityInputRef.current?.focus();
     };
 
-    const onSubmit = async (values) => {
-        try {
-            if (goal) {
-                await axiosInstance.put(`/goals/${goal._id}`, {
-                    ...values,
-                    status: goal.status
-                });
-                toast.success("Goal updated!");
-            } else {
-                await axiosInstance.post('/goals', values);
-                toast.success("Goal added!");
-                form.reset();
-            }
-
-            setOpen(false);
-            onGoalUpdate();    // Refresh parent
-        } catch (err) {
-            console.error(err);
-            toast.error("Failed to save goal");
+    const onSubmit = (values) => {
+        if (goal) {
+            // UPDATE goal
+            updateGoalMutation.mutate(
+                { id: goal._id, data: { ...values, status: goal.status } },
+                {
+                    onSuccess: () => {
+                        toast.success("Goal updated!");
+                        setOpen(false);
+                    },
+                    onError: () => toast.error("Failed to update goal"),
+                }
+            );
+        } else {
+            // CREATE new goal
+            createGoalMutation.mutate(values, {
+                onSuccess: () => {
+                    toast.success("Goal added!");
+                    form.reset();
+                    setOpen(false);
+                },
+                onError: () => toast.error("Failed to add goal"),
+            });
         }
     };
 

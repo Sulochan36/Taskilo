@@ -13,24 +13,11 @@ import { calculateProgress, statusGoals } from '../lib/utils';
 
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { axiosInstance } from '../lib/axios';
+import { useGoalsQuery } from '../lib/queries/goals';
 
 
 const GoalsTable = () => {
-    const [goals, setGoals] = useState([]);
-
-    useEffect(() => {
-            const fetchGoals = async () => {
-                try {
-                    const res = await axiosInstance.get('/goals'); // GET /api/goals returns goals for the logged-in user
-                    setGoals(res.data);
-                } catch (error) {
-                    console.error('Failed to fetch goals:', error);
-                }
-            };
-    
-            fetchGoals();
-        }, []);
+    const { data: goals = [] } = useGoalsQuery();
     
 
     return (

@@ -1,39 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import GoalCard from '../components/GoalCard';
 import AddGoalForm from '../components/AddGoalForm';
-import { axiosInstance } from '../lib/axios';
+import { useGoalsQuery } from '../lib/queries/goals';
 
 const Goals = () => {
-  const [goals, setGoals] = useState([]);
+  const { data: goals, isLoading } = useGoalsQuery();
 
-  const fetchGoals = async () => {
-    try {
-      const res = await axiosInstance.get('/goals');
-      setGoals(res.data);
-    } catch (err) {
-      console.error("Failed to fetch goals:", err);
-    }
-  };
-
-  // Fetch goals once when page loads
-  useEffect(() => {
-    fetchGoals();
-  }, []);
-
-  // Called after adding/updating/deleting a goal
-  const handleGoalUpdate = () => {
-    fetchGoals();
-  };
+  if (isLoading) return <p>Loading goals...</p>;
 
   return (
     <div>
       <h2 className="text-4xl text-center my-4">GOALS</h2>
 
       {/* This Add form adds new goals */}
-      <AddGoalForm onGoalUpdate={handleGoalUpdate} />
+      <AddGoalForm/>
 
       {/* Pass goals to GoalCard */}
-      <GoalCard goals={goals} onGoalUpdate={handleGoalUpdate} />
+      <GoalCard goals={goals} />
     </div>
   );
 };
