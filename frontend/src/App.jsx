@@ -22,6 +22,7 @@ import { GoalsProvider } from './GoalsContext';
 import { useAuthStore } from './store/useAuthStore.js';
 import { Loader } from 'lucide-react';
 import ProtectedRoute from './ProtectedRoutes.jsx';
+import GoalDetails from './pages/GoalDetails.jsx';
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
@@ -52,6 +53,10 @@ const App = () => {
           <Route path="goals" element={<Goals />} />
           <Route path="notes" element={<Notes />} />
           <Route path="todolists" element={<TodoLists />} />
+
+          {/* Goal Details Page for Creating & Editing */}
+          <Route path="goalDetails/:id" element={<GoalDetails />} /> {/* Edit an existing goal */}
+          <Route path="goalDetails/new" element={<GoalDetails />} /> {/* Create a new goal */}
         </Route>
       </Route>
     )

@@ -29,7 +29,7 @@ const formSchema = z.object({
     ).min(1)
 });
 
-const AddGoalForm = ({ goal, onGoalUpdate }) => {
+const AddGoalForm = ({ goal }) => {
 
     const [open, setOpen] = useState(false);
     const [activityText, setActivityText] = useState("");

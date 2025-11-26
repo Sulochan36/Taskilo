@@ -11,10 +11,18 @@ import AddGoalForm from './AddGoalForm';
 import { statusGoals } from '../lib/utils';
 import { axiosInstance } from '../lib/axios';
 import { useDeleteGoal } from '../lib/queries/goals';
+import { useNavigate } from 'react-router';
 
-const GoalCard = ({ goals, onGoalUpdate }) => {
+const GoalCard = ({ goals }) => {
 
+    const navigate = useNavigate();
     const deleteGoalMutation = useDeleteGoal();
+
+
+    const handleGoalClick = (goalId) => {
+        // Redirect to the GoalDetails page with the specific goal ID
+        navigate(`/goalDetails/${goalId}`);
+    };
 
     const handleDelete = (id) => {
         deleteGoalMutation.mutate(id);
@@ -33,7 +41,7 @@ const GoalCard = ({ goals, onGoalUpdate }) => {
 
                     <CardHeader>
                         <div className='flex justify-center items-center gap-5 mb-5'>
-                            <CardTitle className='text-4xl font-extrabold underline'>
+                            <CardTitle className='text-4xl font-extrabold underline hover:cursor-pointer' onClick={() => handleGoalClick(goal._id)}>
                                 {goal.title}
                             </CardTitle>
                             <Badge>{statusGoals(goal.todolist)}</Badge>
@@ -68,10 +76,12 @@ const GoalCard = ({ goals, onGoalUpdate }) => {
 
                         <div className='flex gap-5'>
                             {/* Edit Goal Form */}
-                            <AddGoalForm
-                                goal={goal}
-                                onGoalUpdate={onGoalUpdate}
-                            />
+                            <Button
+                                
+                                onClick={() => navigate(`/goalDetails/${goal._id}`)}
+                            >
+                                Edit Goal
+                            </Button>
 
                             <Button
                                 className='bg-red-500'

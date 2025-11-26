@@ -1,10 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createGoal, deleteGoal, getGoals, updateGoal } from "../api/goalsApi";
+import { createGoal, deleteGoal, getGoalById, getGoals, updateGoal } from "../api/goalsApi";
 
 export const useGoalsQuery = () => useQuery({
     queryKey:['goals'],
     queryFn:getGoals,
 });
+
+
+export const useGoalQuery = (id) =>
+    useQuery({
+        queryKey: ["goal", id],
+        queryFn: () => getGoalById(id),
+        enabled: !!id && id !== "new",
+    });
 
 export const useCreateGoal = () => {
     const qc = useQueryClient();

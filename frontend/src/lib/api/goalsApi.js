@@ -5,6 +5,11 @@ export const getGoals = async () => {
     return res.data;
 };
 
+export const getGoalById = async (id) => {
+    const res = await axiosInstance.get(`/goals/${id}`);
+    return res.data;
+};
+
 export const createGoal = async (data) => {
     const res = await axiosInstance.post("/goals", data);
     return res.data;

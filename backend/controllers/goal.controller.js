@@ -40,6 +40,25 @@ export const getGoals = async (req, res) => {
     }
 };
 
+
+export const getGoalById = async (req, res) => {
+    try {
+        const goal = await Goal.findOne({
+            _id: req.params.id,
+            user: req.user._id, // ensure user can only access own goals
+        });
+
+        if (!goal) {
+            return res.status(404).json({ message: "Goal not found" });
+        }
+
+        res.status(200).json(goal);
+    } catch (err) {
+        res.status(500).json({ message: "Failed to fetch goal details" });
+    }
+};
+
+
 export const deleteGoal = async (req, res) => {
     try {
         const { id } = req.params;
