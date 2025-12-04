@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
+
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -114,8 +118,72 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+  }
+
+  p,li {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  small {
+    font-size: 0.875rem;
+    font-weight: 300;
+  }
+
+  label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+
+  /* Headings (Geist) */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Geist', sans-serif;
+    line-height: 1.1;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    /* optional */
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  h5 {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  h6 {
+    font-size: 1rem;
+    font-weight: 500;
   }
 }
 
@@ -145,14 +213,24 @@
 /* Dark mode styles */
 .dark .custom-calendar .react-calendar__tile {
   background-color: #1f2937;
-  /* gray-800 */
   color: #f9fafb;
-  /* light text */
 }
 
 .dark .custom-calendar .react-calendar__tile--active {
   background-color: #818cf8;
-  /* indigo-300 */
   color: #111827;
-  /* dark text */
+}
+
+/* Light mode background */
+.hero-bg-light {
+  background-image: radial-gradient(circle at 0.5px 0.5px, rgba(0, 0, 0, 0.3) 0.5px, transparent 0);
+  background-size: 8px 8px;
+  background-repeat: repeat;
+}
+
+/* Dark mode background */
+.hero-bg-dark {
+  background-image: radial-gradient(circle at 0.5px 0.5px, rgba(255, 255, 255, 0.3) 0.5px, transparent 0);
+  background-size: 8px 8px;
+  background-repeat: repeat;
 }

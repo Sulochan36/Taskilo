@@ -2,59 +2,95 @@ import React from "react";
 
 const ProblemSolution = () => {
     return (
-        <section id='problem-solution' className="w-full py-16 px-6 md:px-12 lg:px-20 bg-transparent">
-            <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
+        <section id="problem-solution" className="w-full py-24 px-6 md:px-12 lg:px-20 bg-transparent">
+
+            {/* Heading */}
+            <div className="max-w-3xl mx-auto text-center mb-16">
+                <h2 className="text-5xl font-bold text-black dark:text-white mb-4">
                     Why Taskilo?
                 </h2>
-                <p className="text-lg text-neutral-300 mb-12">
-                    We built Taskilo to tackle a simple but common problem — people set
-                    goals, but rarely follow through.
+                <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    People set goals with good intentions — but staying consistent is where most struggle.
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl mx-auto">
-                {/* Problem */}
-                <div className="bg-transparent rounded-lg p-6 shadow-xs shadow-amber-50 hover:shadow-md transition duration-200">
-                    <h3 className="text-2xl font-semibold text-red-600 dark:text-red-500 mb-4">
+            {/* Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-[45%_1px_45%] gap-12 max-w-6xl mx-auto items-start">
+
+                {/* Problem Card */}
+                <div className="
+                    col-span-1 
+                    bg-neutral-900 dark:bg-neutral-900 
+                    text-neutral-300 dark:text-neutral-300 
+                    rounded-3xl 
+                    p-10 md:p-12
+                    min-h-[380px] md:min-h-[420px]
+                    border border-neutral-800 
+                    shadow-inner shadow-black/20
+                ">
+                    <h3 className="text-3xl font-bold mb-6 text-neutral-200">
                         The Problem
                     </h3>
-                    <ul className="text-neutral-200 text-lg text-justify list-disc list-inside space-y-2">
-                        <li>
-                            Most goal-setting tools are too simple to track long-term progress.
+
+                    <ul className="space-y-4 text-neutral-400 leading-relaxed">
+                        <li className="flex items-start">
+                            <span className="mr-3 text-amber-400">•</span>
+                            <p>Most goal-setting tools are too simple to track long-term progress.</p>
                         </li>
-                        <li>
-                            Others are overly complex, making it hard to stay consistent.
+                        <li className="flex items-start">
+                            <span className="mr-3 text-amber-400">•</span>
+                            <p>Others are overly complex, making consistency difficult.</p>
                         </li>
-                        <li>
-                            Lack of structure and motivation causes users to lose focus.
+                        <li className="flex items-start">
+                            <span className="mr-3 text-amber-400">•</span>
+                            <p>Lack of structure and motivation causes users to lose focus.</p>
                         </li>
-                        <li>
-                            For people who tend to procrastinate, setting up templates and tasks can feel overwhelming.
+                        <li className="flex items-start">
+                            <span className="mr-3 text-amber-400">•</span>
+                            <p>Procrastination makes starting feel overwhelming.</p>
                         </li>
                     </ul>
                 </div>
 
-                {/* Solution */}
-                <div className="bg-transparent rounded-lg p-6 shadow-xs shadow-amber-50 hover:shadow-md transition duration-200">
-                    <h3 className="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">
+                {/* Divider */}
+                <div className="hidden md:block w-full border-l border-neutral-300 dark:border-neutral-700 mx-auto h-full" />
+
+                {/* Solution Card */}
+                <div className="
+                    col-span-1 
+                    bg-gradient-to-br from-neutral-100 to-neutral-50 dark:from-neutral-800 dark:to-neutral-700
+                    text-neutral-700 dark:text-neutral-200 
+                    rounded-3xl 
+                    p-10 md:p-12
+                    min-h-[380px] md:min-h-[420px]
+                    border border-neutral-300 dark:border-neutral-700 
+                    shadow-lg shadow-black/5
+                    hover:scale-105 transition-transform duration-300
+                ">
+                    <h3 className="text-3xl font-bold mb-6 text-neutral-800 dark:text-neutral-100">
                         The Solution
                     </h3>
-                    <ul className="text-neutral-200 text-lg text-justify list-disc list-inside space-y-2">
-                        <li>
-                            Taskilo helps break down big goals into smaller, manageable milestones.
+
+                    <ul className="space-y-4 leading-relaxed">
+                        <li className="flex items-start">
+                            <span className="mr-3 text-emerald-400">•</span>
+                            <p>Breaks big goals into small, manageable milestones.</p>
                         </li>
-                        <li>
-                            Encourages action with clear, structured tasks and progress tracking.
+                        <li className="flex items-start">
+                            <span className="mr-3 text-emerald-400">•</span>
+                            <p>Provides clear tasks that keep you focused and motivated.</p>
                         </li>
-                        <li>
-                            Built-in reminders keep users consistent and on track.
+                        <li className="flex items-start">
+                            <span className="mr-3 text-emerald-400">•</span>
+                            <p>Built-in reminders help you stay consistent effortlessly.</p>
                         </li>
-                        <li>
-                            A clean, intuitive UI reduces distraction and makes goal-setting effortless.
+                        <li className="flex items-start">
+                            <span className="mr-3 text-emerald-400">•</span>
+                            <p>A clean, distraction-free UI makes goal-setting simple and enjoyable.</p>
                         </li>
                     </ul>
                 </div>
+
             </div>
         </section>
     );

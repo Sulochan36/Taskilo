@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle, Calendar, Bell, LayoutDashboard, Moon, TrendingUp } from "lucide-react";
+import { CheckCircle, Calendar, Bell, LayoutDashboard, TrendingUp } from "lucide-react";
 
 const features = [
     {
@@ -15,7 +15,7 @@ const features = [
     {
         icon: <Bell className="h-8 w-8 text-yellow-500" />,
         title: "Smart Reminders (Coming Soon)",
-        description: "Stay consist1ent with friendly nudges and deadline alerts to keep you on track.",
+        description: "Stay consistent with friendly nudges and deadline alerts to keep you on track.",
     },
     {
         icon: <Calendar className="h-8 w-8 text-purple-600" />,
@@ -27,32 +27,43 @@ const features = [
         title: "Personalized Dashboard",
         description: "Categorize your goals and see a clear overview of your progress at a glance.",
     },
-    {
-        icon: <Moon className="h-8 w-8 text-gray-600 dark:text-white" />,
-        title: "Dark Mode",
-        description: "Work comfortably day or night with built-in dark mode support.",
-    },
 ];
 
 const Features = () => {
     return (
-        <section id="features" className="w-full py-16 px-6 md:px-12 lg:px-20">
-            <div className="text-center mb-12">
-                <h2 className="text-5xl text-center font-bold text-gray-900 dark:text-white">Powerful Features to Achieve More</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mt-4">
+        <section id="features" className="relative w-full py-24 px-6 md:px-12 lg:px-20 mt-30 overflow-hidden">
+
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] z-0 perspective-distant" />
+
+            {/* Heading */}
+            <div className="text-center mb-16">
+                <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                    Powerful Features to Achieve More
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-300">
                     Everything you need to plan, track, and crush your goals — all in one place.
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
                 {features.map((feature, index) => (
                     <div
                         key={index}
-                        className="flex flex-col items-start p-6 bg-transparent rounded-lg shadow-xs shadow-neutral-200 hover:shadow-md transition duration-300"
+                        className="relative flex flex-col items-start bg-gradient-to-br from-neutral-100 to-white dark:from-neutral-800 dark:to-neutral-700 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-transform duration-300 hover:scale-105"
                     >
-                        <div className="mb-4">{feature.icon}</div>
-                        <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">{feature.title}</h3>
-                        <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                        {/* Floating Icon */}
+                        <div className="absolute -top-6 left-6 p-4 bg-white dark:bg-neutral-900 rounded-full shadow-md flex items-center justify-center">
+                            {feature.icon}
+                        </div>
+
+                        {/* Card Content */}
+                        <h3 className="mt-8 text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                            {feature.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            {feature.description}
+                        </p>
                     </div>
                 ))}
             </div>

@@ -48,7 +48,7 @@ const Navbar = () => {
     );
 
     return (
-        <nav className="w-full px-6 md:px-12 py-4 border-b bg-transparent backdrop-blur-2xl z-50 relative">
+        <nav className="w-full px-6 md:px-12 py-4 border-b bg-transparent backdrop-blur-2xl z-50 fixed top-0 ">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
                 <SidebarTrigger />
                 {/* Logo */}
