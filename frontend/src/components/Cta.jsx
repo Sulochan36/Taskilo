@@ -1,47 +1,65 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const Cta = () => {
     return (
-        <section class="py-16">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="py-24">
+            <div className="mx-auto max-w-6xl px-6">
+
                 <div
-                    class="lg:py-14 lg:px-20 p-10 rounded-2xl bg-gradient-to-r from-muted to-65% flex items-center justify-between flex-col lg:flex-row gap-x-20"
+                    className="
+                        p-12 md:p-16 rounded-3xl 
+                        border border-neutral-300 dark:border-neutral-700
+
+                        /* stronger but still neutral gradient */
+                        bg-gradient-to-br 
+                        from-neutral-50 via-neutral-200 to-neutral-100
+                        dark:from-neutral-900 dark:via-neutral-800 dark:to-black
+
+                        /* drift requirements */
+                        bg-[length:250%_250%]
+                        bg-[position:0%_50%]
+                        animate-[drift_12s_ease-in-out_infinite]
+
+                        shadow-sm dark:shadow-none
+                        flex flex-col md:flex-row 
+                        items-center justify-between 
+                        gap-10
+                    "
                 >
-                    <div class="block text-center mb-5 lg:text-left lg:mb-0">
-                        <h2
-                            class="font-manrope text-4xl text-white font-semibold mb-5 lg:mb-2"
-                        >
-                            Get Started
+                    {/* LEFT CONTENT */}
+                    <div className="text-center md:text-left max-w-xl">
+                        <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-50 mb-4">
+                            Ready to Get Started?
                         </h2>
-                        <p class="text-xl text-indigo-100">
-                            Create account and move ahead with your goals.
+                        <p className="text-lg text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                            Create your account and begin organizing your tasks with structure and clarity.
                         </p>
                     </div>
-                    <Link to="/signup" className="flex items-center gap-2 bg-white rounded-full shadow-sm text-lg text-indigo-600 font-semibold py-4 px-8 transition-all duration-500">
-                        Create Account
 
-                        <svg
-                            width="19"
-                            height="14"
-                            viewBox="0 0 19 14"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M1.75 7L16.4167 7M11.8333 12.5L16.6852 7.64818C16.9907 7.34263 17.1435 7.18985 17.1435 7C17.1435 6.81015 16.9907 6.65737 16.6852 6.35182L11.8333 1.5"
-                                stroke="#4F46E5"
-                                stroke-width="2.4"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </svg>
+                    {/* BUTTON */}
+                    <Link
+                        to="/signup"
+                        className="
+                            flex items-center gap-3 
+                            px-8 py-4 rounded-full 
+                            bg-black dark:bg-white 
+                            text-white dark:text-black 
+                            font-semibold text-lg 
+                            shadow-md hover:shadow-lg 
+                            transition-all duration-300 
+                            hover:-translate-y-0.5
+                        "
+                    >
+                        Create Account
+                        <ArrowRight className="w-5 h-5" />
                     </Link>
                 </div>
+
             </div>
         </section>
+    );
+};
 
-    )
-}
-
-export default Cta
+export default Cta;

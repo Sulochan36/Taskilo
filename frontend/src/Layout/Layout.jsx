@@ -17,7 +17,7 @@ const Layout = () => {
                 {user && <AppSideBar />}
                 <main className="w-full">
                     <Navbar />
-                    <section className="px-4">
+                    <section className="px-4 mt-30">
                         <Outlet />
                     </section>
                 </main>

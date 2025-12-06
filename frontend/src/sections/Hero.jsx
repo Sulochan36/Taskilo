@@ -2,7 +2,7 @@ import React from 'react'
 
 const Hero = () => {
     return (
-        <section id='hero' className='relative top-20 container flex flex-col flex-wrap justify-center items-center gap-y-4 px-4 py-5'
+        <section id='hero' className='container flex flex-col flex-wrap justify-center items-center gap-y-4 px-4 py-5'
         >
             {/* LOGO */}
             <div>
@@ -17,7 +17,7 @@ const Hero = () => {
                 </div>
                 
                 <div>
-                    <button type="button" className="px-4 py-2 text-[18px] bg-black text-white dark:bg-white dark:text-black font-semibold rounded hover:cursor-pointer transition-all duration-300 my-3 hover:scale-110 hover:shadow-xl hover:inset-2 hover:inset-white ">
+                    <button type="button" className="px-4 py-2 text-[18px] bg-black text-white dark:bg-white dark:text-black font-semibold rounded-md hover:cursor-pointer transition-all duration-300 my-3 hover:scale-110 hover:shadow-xl hover:inset-2 hover:inset-white ">
                         Get Started
                     </button>
                 </div>
