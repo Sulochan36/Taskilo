@@ -1,4 +1,5 @@
-import  { useState } from "react";
+
+import  React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTheme } from "./provider/ThemeProvider";
 import { useAuthStore } from "../store/useAuthStore";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 
 
 const Navbar = () => {
@@ -50,7 +50,7 @@ const Navbar = () => {
     return (
         <nav className="w-full px-6 md:px-12 py-4 border-b bg-transparent backdrop-blur-2xl z-50 fixed top-0 ">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
-                <SidebarTrigger />
+                
                 {/* Logo */}
                 <NavLink to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
                     Taskilo
@@ -96,18 +96,25 @@ const Navbar = () => {
                             </NavLink>
                         </>
                     ) : (
-                        <>
-                            <span className="hidden md:inline-block text-sm text-gray-700 dark:text-gray-300">
-                                Welcome, {user?.fullName?.split(" ")[0]}
-                            </span>
-                            <Button variant="outline" size="sm" onClick={handleLogout}>
-                                Logout
-                            </Button>
-                            <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>{user?.fullName?.[0] ?? "U"}</AvatarFallback>
-                            </Avatar>
-                        </>
+                            <>
+                                {/* 🔑 Primary CTA when logged in */}
+                                <NavLink to="/dashboard">
+                                    <Button size="sm">Go to Dashboard</Button>
+                                </NavLink>
+
+                                <span className="hidden md:inline-block text-sm text-gray-700 dark:text-gray-300">
+                                    Hi, {user?.fullName?.split(" ")[0]}
+                                </span>
+
+                                <Button variant="outline" size="sm" onClick={handleLogout}>
+                                    Logout
+                                </Button>
+
+                                <Avatar>
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback>{user?.fullName?.[0] ?? "U"}</AvatarFallback>
+                                </Avatar>
+                            </>
                     )}
 
                     {/* Hamburger Menu (Mobile) */}
@@ -148,6 +155,6 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default React.memo(Navbar);
 
 
