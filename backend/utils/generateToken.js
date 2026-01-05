@@ -3,13 +3,13 @@ import jwt from "jsonwebtoken";
 
 export const generateAccessToken = (userId, res) => {
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-        expiresIn: "1m", // 1 minutes
+        expiresIn: "5m", // 1 minutes
     });
 
     res.cookie("accessToken", token, {
-        maxAge: 1 * 60 * 1000, // 15 minutes
+        maxAge: 5 * 60 * 1000, // 15 minutes
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production",
     });
 
@@ -25,7 +25,7 @@ export const generateRefreshToken = (userId, res) => {
     res.cookie("refreshToken", token, {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production",
     });
 
