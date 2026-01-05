@@ -4,7 +4,7 @@ import Features from '../sections/Features'
 import ProblemSolution from '../sections/ProblemSolution'
 import HowItWorks from '../sections/HowItWorks'
 import { useLocation } from 'react-router'
-import Cta from '../components/cta'
+import Cta from '../components/Cta'
 import Footer from '../components/Footer'
 
 
